@@ -1,5 +1,5 @@
 #!/bin/sh
-TOKEN="ec423e4bac2edf6f853668bac6ee0951"
+TOKEN=""
 API="http://localhost:4741"
 URL_PATH="/artPieces"
 

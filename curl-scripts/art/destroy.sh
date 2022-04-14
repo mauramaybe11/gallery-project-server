@@ -1,6 +1,6 @@
 #!/bin/bash
-TOKEN="ec423e4bac2edf6f853668bac6ee0951"
-ID="6255a359ee41be63e7dcf17e"
+TOKEN=""
+ID=""
 API="http://localhost:4741"
 URL_PATH="/artPieces"
 
