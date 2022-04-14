@@ -28,21 +28,34 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // INDEX
-// GET /examples
+// GET all of the signed in user's art pieces
 router.get('/artPieces', requireToken, (req, res, next) => {
-  Art.find()
-    .then(arts => {
+  Art.find({ owner: req.user.id })
+    .then((arts) => {
       // `examples` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
       // apply `.toObject` to each one
-      return arts.map(art => art.toObject())
+      return arts.map((art) => art.toObject())
     })
-    // respond with status 200 and JSON of the examples
-    .then(arts => res.status(200).json({ art: arts }))
-    // if an error occurs, pass it to the handler
+  // respond with status 200 and JSON of the examples
+    .then((arts) => res.status(200).json({ art: arts }))
+  // if an error occurs, pass it to the handler
     .catch(next)
 })
-
+// Index get all of everyone's own art pieces
+router.get('/artPieces/allUsers', requireToken, (req, res, next) => {
+  Art.find()
+    .then((arts) => {
+      // `examples` will be an array of Mongoose documents
+      // we want to convert each one to a POJO, so we use `.map` to
+      // apply `.toObject` to each one
+      return arts.map((art) => art.toObject())
+    })
+  // respond with status 200 and JSON of the examples
+    .then((arts) => res.status(200).json({ art: arts }))
+  // if an error occurs, pass it to the handler
+    .catch(next)
+})
 // SHOW
 // GET /examples/5a7db6c74d55bc51bdf39793
 router.get('/artPieces/:id', requireToken, (req, res, next) => {
@@ -98,6 +111,7 @@ router.patch('/artPieces/:id', requireToken, removeBlanks, (req, res, next) => {
 
 // DESTROY
 // DELETE /examples/5a7db6c74d55bc51bdf39793
+
 router.delete('/artPieces/:id', requireToken, (req, res, next) => {
   Art.findById(req.params.id)
     .then(handle404)
